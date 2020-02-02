@@ -1,0 +1,81 @@
+---
+before:
+  hooks:
+    - go mod vendor
+project_name: git-cloner
+builds:
+  - binary: 'git-cloner'
+    id: git-cloner-darwin
+    goarch:
+      - amd64
+    goos:
+      - darwin
+    env:
+      - CGO_ENABLED=0
+  - binary: 'git-cloner'
+    id: git-cloner-linux
+    goarch:
+      - amd64
+    goos:
+      - linux
+    env:
+      - CGO_ENABLED=0
+archives:
+  - format: tar.gz
+    id: git-cloner-darwin-tgz
+    wrap_in_directory: false
+    name_template: '{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}'
+    builds:
+      - git-cloner-darwin
+  - format: tar.gz
+    id: git-cloner-linux-tgz
+    wrap_in_directory: false
+    name_template: '{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}'
+    builds:
+      - git-cloner-linux
+  - format: binary
+    id: git-cloner-darwin-bin
+    wrap_in_directory: false
+    name_template: '{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}'
+    builds:
+      - git-cloner-darwin
+  - format: binary
+    id: git-cloner-linux-bin
+    wrap_in_directory: false
+    name_template: '{{ .ProjectName }}-{{ .Os }}-{{ .Arch }}'
+    builds:
+      - git-cloner-linux
+checksum:
+  name_template: 'sha256sum.txt'
+snapshot:
+  name_template: '{{ .Tag }}'
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+release:
+  ids:
+    - git-cloner-linux-tgz
+    - git-cloner-linux-bin
+    - git-cloner-darwin-tgz
+    - git-cloner-darwin-bin
+  github:
+    owner: lzecca78
+    name: git-cloner
+  name_template: '{{ .Tag }}'
+brews:
+  - name: git-cloner
+    github:
+      owner: lzecca78
+      name: homebrew-git-cloner
+    folder: Formula
+    homepage: 'https://gihub.com/lzecca78/git-cloner'
+    description: 'Git-cloner binary'
+    conflicts:
+      - git-cloner
+    test: |
+      system "#{bin}/git-cloner"
+    install: |
+      bin.install 'git-cloner'
