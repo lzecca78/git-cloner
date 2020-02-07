@@ -1,6 +1,6 @@
 ---
 repos:
-  - git_remote: https://github.com/lzecca78/git-cloner.git
+  - git_remote: https://github.com/lzecca78/kzenv.git
     local_dir: /tmp/test
   - git_remote: https://github.com/git-chglog/git-chglog.git
     local_dir: /tmp/test2
