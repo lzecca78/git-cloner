@@ -27,15 +27,20 @@ var cloneCmd = &cobra.Command{
 	Short: "this will clone defined in config file",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
+		missing, _ := cmd.Flags().GetBool("missing")
 		cfg := config.GetConfig(cfgFile)
-		internal.Clone(cfg)
-
+		if missing {
+			internal.Clone(cfg, missing)
+		} else {
+			internal.Clone(cfg)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(cloneCmd)
 
+	cloneCmd.Flags().BoolP("missing", "m", false, "clone only not existing repos")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
@@ -44,5 +49,4 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// cloneCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

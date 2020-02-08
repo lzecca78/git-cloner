@@ -12,12 +12,19 @@ import (
 )
 
 //Clone will access to cvs and clone/fetch
-func Clone(cfg *config.GitConfig) {
+func Clone(cfg *config.GitConfig, opts ...bool) {
 	for _, v := range cfg.Repos {
 		remote := v.Git_Remote
 		cleanRemoteBase := strings.Replace(path.Base(v.Git_Remote), ".git", "", -1)
 		local := path.Join(v.LocalDir, cleanRemoteBase)
 		log.Printf("processing repo %s in local dir %s %s \n", remote, local, emoji.Sprint(":gear:"))
+
+		if len(opts) >= 1 {
+			if alreadyCloned(local) {
+				log.Printf("repo %s already cloned in %s, skipping  %s \n", remote, local, emoji.Sprint(":kangaroo:"))
+				continue
+			}
+		}
 		repo, err := vcs.NewRepo(remote, local)
 		if err != nil {
 			log.Fatal(err)
