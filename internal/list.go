@@ -4,6 +4,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 
 	"github.com/kyokomi/emoji"
 	"github.com/lzecca78/git-cloner/config"
@@ -17,7 +18,8 @@ func List(cfg *config.GitConfig) {
 	for i, v := range cfg.Repos {
 		remote := v.Git_Remote
 		var emojiIcon string
-		local := path.Join(v.LocalDir, path.Base(v.Git_Remote))
+		cleanRemoteBase := strings.Replace(path.Base(v.Git_Remote), ".git", "", -1)
+		local := path.Join(v.LocalDir, cleanRemoteBase)
 		if alreadyCloned(local) {
 			emojiIcon = emoji.Sprint(":check_mark_button:")
 		} else {
