@@ -6,6 +6,8 @@ the initial purpose of this project is to allow to clone multiple different repo
 
 To use it just install it with the instruction below, and create a repos.yml with the structure in the example directory
 
+![](images/git-cloner.gif)
+
 ### Installing
 
 There is a brew tap repository for macos:
